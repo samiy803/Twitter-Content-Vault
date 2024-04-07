@@ -1,5 +1,5 @@
 "use client";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import {
     Table,
     TableBody,
@@ -16,12 +16,18 @@ import { toast } from "sonner";
 
 export default function Users({ users }: { users: any[] }) {
     const [deleteId, setDeleteId] = useState<string | null>(null);
+    const [userList, setUserList] = useState<any[]>(users);
+
+    useEffect(() => {
+        setUserList(users);
+    }, [users]);
 
     function handleDelete(id: string) {
         if (deleteId === id) {
             deleteUser(id).then(() => {
                 toast.success("User deleted.");
                 setDeleteId(null);
+                setUserList(userList.filter((u) => u.id !== id));
             }).catch((e) => {
                 console.error(e);
                 toast.error(e.message);
@@ -58,7 +64,7 @@ export default function Users({ users }: { users: any[] }) {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {users.map((user) => (
+                            {userList.map((user) => (
                                 <TableRow key={user.id}>
                                     <TableCell>{user.id}</TableCell>
                                     <TableCell>{user.username}</TableCell>
