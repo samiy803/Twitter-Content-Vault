@@ -27,7 +27,7 @@ import { Label } from "@/components/ui/label";
 import { newUser } from "@/actions/newUser";
 import { Checkbox } from "./ui/checkbox";
 
-export default function Users({ users }: { users: any[] }) {
+export default function Users({ users, admin }: { users: any[], admin: boolean }) {
     const [deleteId, setDeleteId] = useState<string | null>(null);
     const [userList, setUserList] = useState<any[]>(users);
     const [newUserIsAdmin, setNewUserIsAdmin] = useState(false);
@@ -79,7 +79,7 @@ export default function Users({ users }: { users: any[] }) {
                         </h1>
                         <Dialog open={newUserIsOpen} onOpenChange={setNewUserIsOpen}>
                             <DialogTrigger asChild>
-                                <Button>New User</Button>
+                                <Button disabled={!admin}>New User</Button>
                             </DialogTrigger>
                             <DialogContent className="sm:max-w-[425px]">
                                 <form action={newUserWrapper}>
@@ -161,9 +161,9 @@ export default function Users({ users }: { users: any[] }) {
                                 <TableHead className="w-[70px]">
                                     Admin
                                 </TableHead>
-                                <TableHead className="text-right w-[90px]">
+                                {admin && <TableHead className="text-right w-[90px]">
                                     Actions
-                                </TableHead>
+                                </TableHead>}
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -174,7 +174,7 @@ export default function Users({ users }: { users: any[] }) {
                                     <TableCell>
                                         {user.admin ? "Yes" : "No"}
                                     </TableCell>
-                                    <TableCell className="text-right">
+                                    {admin && <TableCell className="text-right">
                                         <span
                                             className="hover:underline text-red-500 cursor-pointer"
                                             onClick={() => {
@@ -185,7 +185,7 @@ export default function Users({ users }: { users: any[] }) {
                                                 ? "confirm?"
                                                 : "delete"}
                                         </span>
-                                    </TableCell>
+                                    </TableCell>}
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -194,9 +194,9 @@ export default function Users({ users }: { users: any[] }) {
                                 <TableCell>ID</TableCell>
                                 <TableCell>Username</TableCell>
                                 <TableCell>Admin</TableCell>
-                                <TableCell className="text-right">
+                                {admin && <TableCell className="text-right">
                                     Actions
-                                </TableCell>
+                                </TableCell>}
                             </TableRow>
                         </TableFooter>
                     </Table>
