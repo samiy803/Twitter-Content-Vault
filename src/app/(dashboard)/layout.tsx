@@ -7,42 +7,44 @@ import { SideBar } from "@/components/sidebar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Joke Vault",
-  description: "Joke Vault Dashboard",
+    title: "Joke Vault",
+    description: "Joke Vault Dashboard",
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body className={inter.className + " dark ring-0 border-0"}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-          >
-            <div className="group flex flex-row gap-2 lg:gap-3 items-start">
-            <SideBar
-                links={[
-                    {
-                        title: "Home",
-                        icon: "home",
-                        href: "/",
-                    },
-                    {
-                        title: "Users",
-                        icon: "users",
-                        href: "/users",
-                    }
-                ]}
-            >Hello</SideBar>
-        </div>
-          </ThemeProvider>
-          </body>
-    </html>
-  );
+    return (
+        <html lang="en">
+            <body className={inter.className + " dark ring-0 border-0"}>
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    <div className="group flex flex-row gap-2 lg:gap-3 items-start">
+                        <SideBar
+                            links={[
+                                {
+                                    title: "Home",
+                                    icon: "home",
+                                    href: "/",
+                                },
+                                {
+                                    title: "Users",
+                                    icon: "users",
+                                    href: "/users",
+                                },
+                            ]}
+                        >
+                            {children}
+                        </SideBar>
+                    </div>
+                </ThemeProvider>
+            </body>
+        </html>
+    );
 }

@@ -27,6 +27,10 @@ export const Joke = sequelize.define('Joke', {
         allowNull: false,
         defaultValue: false,
     },
+}, {
+    createdAt: false,
+    updatedAt: false,
+    tableName: process.env.NODE_ENV == "production" ? "jokes" : "dev_jokes",
 });
 
 export const User = sequelize.define('User', {

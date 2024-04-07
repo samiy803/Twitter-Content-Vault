@@ -36,3 +36,10 @@ yarn-error.log*
 next-env.d.ts
 
 .env
+
+# some of these jokes are pretty foul, so I'm not going to include them in the repo
+seed.sql
+shortjokes.csv
+reddit_jokes.json
+stupidstuff.json
+wocka.json
