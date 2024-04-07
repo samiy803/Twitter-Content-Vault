@@ -10,21 +10,33 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(url);
     }
     try {
-        const v = await jose.jwtVerify(token.value, new TextEncoder().encode(process.env.JWT_SECRET ?? ""), {
-            issuer: "jokevault",
-            audience: "jokevault",
-            requiredClaims: ["exp", "aud", "iss"],
-            algorithms: ["HS256"],
-        });
+        const v = await jose.jwtVerify(
+            token.value,
+            new TextEncoder().encode(process.env.JWT_SECRET ?? ""),
+            {
+                issuer: "jokevault",
+                audience: "jokevault",
+                requiredClaims: ["exp", "aud", "iss"],
+                algorithms: ["HS256"],
+            }
+        );
         if (v.payload.exp && v.payload.exp < Math.floor(Date.now() / 1000)) {
             console.log("token expired");
-            return NextResponse.redirect
+            return NextResponse.redirect;
         }
         if (typeof v === "string") {
             console.log("decoding failed");
             return NextResponse.redirect(url);
         }
-        const response = NextResponse.next();
+        const requestHeaders = new Headers(request.headers);
+        requestHeaders.set("x-is-admin", v.payload.admin as string);
+        requestHeaders.set("x-user-id", v.payload.id as string);
+        const response = NextResponse.next({
+            request: {
+                // New request headers
+                headers: requestHeaders,
+            },
+        });
         const newToken = await new jose.SignJWT({
             username: v.payload.username,
             admin: v.payload.admin,
