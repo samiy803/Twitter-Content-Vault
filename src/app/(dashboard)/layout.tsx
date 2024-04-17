@@ -12,6 +12,8 @@ export const metadata: Metadata = {
     description: "Joke Vault Dashboard",
 };
 
+export const dynamic = 'force-dynamic'
+
 export default function RootLayout({
     children,
 }: Readonly<{

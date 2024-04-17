@@ -7,7 +7,6 @@
  * @param {String} [status] Status of the joke. "approved", "discarded", "used", "none"
  */
 
-import { Joke } from "@/lib/pg";
 import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
