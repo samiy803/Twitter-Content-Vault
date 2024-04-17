@@ -21,7 +21,7 @@ with open(csv_file, 'r') as file:
             joke = joke.replace("'", "''")
 
             # Generate the SQL insert statement
-            sql_statement = f"INSERT INTO dev_jokes (id, joke, approved, used, discarded) VALUES ({id}, '{joke}', false, false, false);\n"
+            sql_statement = f"INSERT INTO dev_jokes (id, joke, approved, used, discarded, hold) VALUES ({id}, '{joke}', false, false, false, false);\n"
             
             # Write the SQL statement to the file
             sql.write(sql_statement)

@@ -10,6 +10,8 @@ import count from "@/actions/count";
 import { thousands } from "@/lib/utils";
 import Workarea from "@/components/Workarea";
 
+export const dynamic = 'force-dynamic'
+
 export default async function Home() {
     const availableJokes = thousands(await count("available"));
     const approvedJokes = thousands(await count("approved"));
