@@ -8,9 +8,7 @@ import {
 
 import count from "@/actions/count";
 import { thousands } from "@/lib/utils";
-import fs from "fs";
-import TweetGenerator from "@/lib/tweet-generator";
-import TweetPreview from "@/components/tweet-preview";
+import Workarea from "@/components/Workarea";
 
 export default async function Home() {
     const availableJokes = thousands(await count("available"));
@@ -63,21 +61,7 @@ export default async function Home() {
                     </MetricContent>
                 </Metric>
             </div>
-            <TweetPreview
-                data={{
-                    image: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
-                    body: "This is a test joke",
-                    username: "jokevault",
-                    likes: "100",
-                    reposts: "50",
-                    views: "1.1k",
-                    date: "2022-01-01",
-                    time: "12:00 AM",
-                    bookmarks: "6",
-                    displayName: "Joke Vault",
-                    quotes: "0",
-                }}
-            />
+    <Workarea />        
         </div>
     );
 }

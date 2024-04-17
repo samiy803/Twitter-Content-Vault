@@ -8,10 +8,8 @@
  */
 
 import { Joke } from "@/lib/pg";
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest } from "next/server";
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
-    const { status } = req.query;
-
-    
+export async function GET(req: NextRequest) {
+    return new Response("Not implemented", { status: 501 });
 }

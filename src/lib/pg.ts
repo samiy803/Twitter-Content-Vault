@@ -31,6 +31,11 @@ export const Joke = sequelize.define(
             allowNull: false,
             defaultValue: false,
         },
+        hold: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+        },
     },
     {
         createdAt: false,

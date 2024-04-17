@@ -18,7 +18,7 @@ export default function TweetPreview({ data }: { data: TweetData }) {
     return (
         <div className="flex flex-col items-center justify-center">
             {!image ? (
-                <Skeleton className="w-96 h-96" />
+                <Skeleton className="w-[600px] h-64" />
             ) : (
                 <Image src={image} alt="Tweet Preview" width={600} height={600}/>
             )}
