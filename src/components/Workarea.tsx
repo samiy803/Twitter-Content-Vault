@@ -91,17 +91,21 @@ export default function Workarea() {
                 {tweet == debouncedTweet ? (
                     <TweetPreview
                         data={{
-                            image: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
+                            image: "/logo.png",
                             body: debouncedTweet,
-                            username: "jokevault",
-                            likes: "100",
-                            reposts: "50",
+                            username: "jokevaults",
+                            likes: "324",
+                            reposts: "36",
                             views: "1.1k",
-                            date: "2022-01-01",
-                            time: "12:00 AM",
-                            bookmarks: "6",
+                            date: new Date().toISOString().split("T")[0],
+                            time: new Date().toLocaleTimeString("en-US", {
+                                hour: "numeric",
+                                minute: "numeric",
+                                hour12: true,
+                            }),
+                            bookmarks: "16",
                             displayName: "Joke Vault",
-                            quotes: "0",
+                            quotes: "10",
                         }}
                     />
                 ) : (
