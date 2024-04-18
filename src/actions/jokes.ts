@@ -15,12 +15,13 @@ export async function getNextJoke() {
     return joke?.toJSON();
 }
 
-export async function approve(id: string) {
+export async function approve(id: string, updatedJoke: string) {
     "use server"
     const joke = await Joke.findByPk(id);
     if (!joke) {
         return null;
     }
+    joke.set("joke", updatedJoke);
     joke.set("approved", true);
     await joke.save();
 }
