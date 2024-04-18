@@ -75,7 +75,7 @@ export default function Workarea() {
                                 toast.error("Tweet is too long");
                                 return;
                             }
-                            approve(joke.id);
+                            approve(joke.id, tweet);
                             getNextJoke().then((joke) => {
                                 setTweet(joke?.joke || "");
                                 setJoke(joke);
