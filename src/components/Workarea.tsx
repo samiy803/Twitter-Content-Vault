@@ -21,9 +21,9 @@ export default function Workarea() {
     }, []);
 
     return (
-        <div className="flex flex-row flex-wrap items-start justify-between mt-4">
+        <div className="flex flex-row flex-wrap items-start justify-between">
             <div className="flex-grow">
-                <h2 className="text-xl font-bold mt-8">Edit Tweet</h2>
+                <h2 className="text-xl font-bold">Edit Tweet</h2>
                 <div className="pt-4 ps-0 pe-6">
                     <Textarea
                         className="w-full h-64 p-4 rounded-lg"
