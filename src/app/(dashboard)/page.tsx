@@ -24,8 +24,6 @@ export default async function Home() {
         limit: 100,
     })).map((joke) => joke.toJSON()) as any[];
 
-    console.log(jokes);
-
     return (
         <div className="mt-4 md:mt-12 mx-2 md:mx-6">
             <h1 className="text-2xl sm:text-2xl md:text-3xl lg:text-5xl font-extrabold my-8">
