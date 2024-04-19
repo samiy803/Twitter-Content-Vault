@@ -5,7 +5,7 @@ import { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
 
-    const ex = exec("python src/app/api/similarMatch/embed.py", (error, stdout, stderr) => {
+    const ex = exec("sudo -E python3 src/app/api/similarMatch/embed.py", (error, stdout, stderr) => {
         if (error) {
             console.error(`exec error: ${error}`);
             return;
