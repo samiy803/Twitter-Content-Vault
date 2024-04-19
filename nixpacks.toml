@@ -1,1 +1,2 @@
-providers = ['...', 'python']
+[start]
+aptPkgs = ["python3", "python3-pip", "libpq-dev"]
