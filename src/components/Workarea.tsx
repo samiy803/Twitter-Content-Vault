@@ -8,6 +8,16 @@ import { approve, discard, getNextJoke, hold } from "@/actions/jokes";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
 
+function similarMatch(joke: string) {
+    fetch("/api/similarMatch", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ joke }),
+    });
+}
+
 export default function Workarea() {
     const [joke, setJoke] = useState({} as any);
     const [tweet, setTweet] = useState("");
@@ -49,6 +59,7 @@ export default function Workarea() {
                                 getNextJoke().then((joke) => {
                                     setTweet(joke?.joke || "");
                                     setJoke(joke);
+                                    similarMatch("search_query: " + joke.joke)
                                 });
                             }}
                         >
@@ -62,6 +73,7 @@ export default function Workarea() {
                                 getNextJoke().then((joke) => {
                                     setTweet(joke?.joke || "");
                                     setJoke(joke);
+                                    similarMatch("search_query: " + joke.joke)
                                 });
                             }}
                         >
@@ -79,6 +91,7 @@ export default function Workarea() {
                             getNextJoke().then((joke) => {
                                 setTweet(joke?.joke || "");
                                 setJoke(joke);
+                                similarMatch("search_query: " + joke.joke)
                             });
                         }}
                     >
