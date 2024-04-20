@@ -3,7 +3,9 @@ from sentence_transformers import SentenceTransformer
 
 def main(joke: str):
     # load the model
-    embed_model = SentenceTransformer("nomic-ai/nomic-embed-text-v1.5", trust_remote_code=True)
+    # nomic-ai/nomic-embed-text-v1.5 is another possible model
+    # avsolatorio/GIST-Embedding-v0 has a slightly smaller memory footprint (smaller ctx len) and is slightly more accurate
+    embed_model = SentenceTransformer("avsolatorio/GIST-Embedding-v0", trust_remote_code=True)
 
     # embed the job description
     embedding = embed_model.encode(joke, convert_to_tensor=True, device="cpu")

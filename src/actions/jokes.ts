@@ -31,7 +31,20 @@ export async function approve(id: string, updatedJoke: string) {
             console.error(`exec error: ${error}`);
             return;
         }
-        const res = db.run(`?[k, v] <- [[\"${id}\", ${stdout.trim()}]] \n :put jokes {k => v}`)
+        let i = 0;
+        const put = () => {
+            db.run(`?[k, v] <- [[\"${id}\", ${stdout.trim()}]] \n :put jokes {k => v}`).catch(async (err) => {
+                // database is probably locked. retry after 500ms second
+                await new Promise((resolve) => setTimeout(resolve, 500));
+                put();
+                // don't want to exceed recursion limit, so we'll just retry 15 times
+                if (i++ > 15) {
+                    console.error("Failed to update database after 15 retries.");
+                    console.error(err);
+                }
+            });
+        }
+        put();
     })
 
     ex.stdin?.write("search_document: " + updatedJoke);
