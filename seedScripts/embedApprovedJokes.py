@@ -22,7 +22,9 @@ def main(dev: bool):
 
     jokes = cur.fetchall()
 
-    model = SentenceTransformer("nomic-ai/nomic-embed-text-v1.5", trust_remote_code=True)
+    # nomic-ai/nomic-embed-text-v1.5 is another possible model
+    # must be the same model as in src/app/api/similarMatch/embed.py, since the embeddings are black boxes
+    model = SentenceTransformer("avsolatorio/GIST-Embedding-v0", trust_remote_code=True)
 
     cozo = Client("sqlite", "cozo.db")
 
@@ -33,12 +35,18 @@ def main(dev: bool):
                         m: 50,
                         dtype: F32,
                         fields: [v],
-                        distance: IP,
-                        ef_construction: 20,
-                        extend_candidates: false,
+                        distance: Cosine,
+                        ef_construction: 200, 
+                        extend_candidates: true,
                         keep_pruned_connections: false,
                     }
-                """)
+                """) 
+        # m = 50, ef_construction = 200, can be tuned. 
+        # See the HNSW paper. Authors recommend m = 2-48, ef_construction some number which produces 0.95 recall.
+        # higher ef_construction -> more accurate but slower indexing
+        # higher m -> more accurate but larger memory footprint
+        # extend_candidates: extends the candidate set to include the neighbors of of each node in the candidate set, probably higher recall
+        # keep_pruned_connections: adds some discarded connections back to the candidate set to maintain fixed number of connections, very unclear wording in the paper
     except:
         pass
     for joke in jokes:

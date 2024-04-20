@@ -7,34 +7,54 @@ import { Skeleton } from "./ui/skeleton";
 import { approve, discard, getNextJoke, hold } from "@/actions/jokes";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
-
-function similarMatch(joke: string) {
-    fetch("/api/similarMatch", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ joke }),
-    });
-}
+import { Separator } from "./ui/separator";
+import { ScrollArea } from "./ui/scroll-area";
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "./ui/table";
 
 export default function Workarea() {
     const [joke, setJoke] = useState({} as any);
     const [tweet, setTweet] = useState("");
     const [debouncedTweet] = useDebounce(tweet, 250);
+    const [similarJokes, setSimilarJokes] = useState<any[] | null>(null);
+    const [time, setTime] = useState("");
+
+    function similarMatch(joke: string) {
+        const currentTime = +new Date();
+        fetch("/api/similarMatch", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ joke }),
+        }).then((res) => {
+            res.json().then((data) => {
+                setSimilarJokes(data);
+                setTime((+new Date() - currentTime) / 1000 + "s");
+            });
+        });
+    }
 
     useEffect(() => {
         getNextJoke().then((joke) => {
             setTweet(joke?.joke || "");
             setJoke(joke);
+            similarMatch(joke.joke);
         });
     }, []);
 
     return (
         <div className="flex flex-row flex-wrap items-start justify-between">
             <div className="flex-grow">
-                <h2 className="text-xl font-bold">Edit Tweet</h2>
-                <div className="pt-4 ps-0 pe-6">
+                <div className="ps-0 pe-6">
+                    <h2 className="text-xl font-bold mb-4">Edit Tweet</h2>
                     <Textarea
                         className="w-full h-64 p-4 rounded-lg"
                         onChange={(e) => setTweet(e.target.value)}
@@ -59,7 +79,7 @@ export default function Workarea() {
                                 getNextJoke().then((joke) => {
                                     setTweet(joke?.joke || "");
                                     setJoke(joke);
-                                    similarMatch("search_query: " + joke.joke)
+                                    similarMatch(joke.joke);
                                 });
                             }}
                         >
@@ -73,7 +93,7 @@ export default function Workarea() {
                                 getNextJoke().then((joke) => {
                                     setTweet(joke?.joke || "");
                                     setJoke(joke);
-                                    similarMatch("search_query: " + joke.joke)
+                                    similarMatch(joke.joke);
                                 });
                             }}
                         >
@@ -91,7 +111,7 @@ export default function Workarea() {
                             getNextJoke().then((joke) => {
                                 setTweet(joke?.joke || "");
                                 setJoke(joke);
-                                similarMatch("search_query: " + joke.joke)
+                                similarMatch(joke.joke);
                             });
                         }}
                     >
@@ -99,8 +119,8 @@ export default function Workarea() {
                     </Button>
                 </div>
             </div>
-            <div>
-                <h2 className="text-xl font-bold mt-8 mb-4">Live Preview</h2>
+            <div className="pe-6">
+                <h2 className="text-xl font-bold mb-4">Live Preview</h2>
                 {tweet == debouncedTweet ? (
                     <TweetPreview
                         data={{
@@ -124,6 +144,44 @@ export default function Workarea() {
                 ) : (
                     <Skeleton className="w-[600px] h-64" />
                 )}
+            </div>
+            <div className="flex flex-col w-[clamp(290px,30vw,450px)]">
+                <h2 className="text-xl font-bold mb-4">Similar Jokes</h2>
+                <div className="flex flex-col space-y-4">
+                    <Table>
+                        <TableCaption>{similarJokes ? "Similar Jokes. Executed in " + time : "Doing a vector search for similar jokes... This may take a while."} </TableCaption>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Joke</TableHead>
+                                <TableHead className="w-[40px]">
+                                    Similarity
+                                </TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {/* simple joke and similarit */}
+                            {similarJokes
+                                ? similarJokes.map((joke) => (
+                                      <TableRow key={joke.id}>
+                                          <TableCell>{joke.joke}</TableCell>
+                                          <TableCell>
+                                              {joke.distance}%
+                                          </TableCell>
+                                      </TableRow>
+                                  ))
+                                : [...Array(5)].map((_, i) => (
+                                      <TableRow key={i}>
+                                          <TableCell>
+                                              <Skeleton className="w-full h-6"/>
+                                          </TableCell>
+                                          <TableCell>
+                                              <Skeleton className="w-full h-6"/>
+                                          </TableCell>
+                                      </TableRow>
+                                  ))}
+                        </TableBody>
+                    </Table>
+                </div>
             </div>
         </div>
     );
