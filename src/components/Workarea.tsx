@@ -28,6 +28,7 @@ export default function Workarea() {
 
     function similarMatch(joke: string) {
         const currentTime = +new Date();
+        setSimilarJokes(null);
         fetch("/api/similarMatch", {
             method: "POST",
             headers: {
