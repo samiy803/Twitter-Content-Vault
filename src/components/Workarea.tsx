@@ -166,7 +166,7 @@ export default function Workarea() {
                                       <TableRow key={joke.id}>
                                           <TableCell>{joke.joke}</TableCell>
                                           <TableCell>
-                                              {joke.distance}%
+                                              {joke.similarity}%
                                           </TableCell>
                                       </TableRow>
                                   ))
