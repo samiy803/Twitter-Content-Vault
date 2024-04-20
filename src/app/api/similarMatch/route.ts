@@ -4,7 +4,7 @@ import { NextRequest } from "next/server";
 import { Joke } from "@/lib/pg";
 
 export async function POST(req: NextRequest) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise<Response>(async (resolve, reject) => {
         const ex = exec(
             "sudo -E python3 src/app/api/similarMatch/embed.py",
             (error, stdout, stderr) => {
@@ -47,15 +47,15 @@ export async function POST(req: NextRequest) {
                                 const similarJokes = jokes // basically a join
                                     .map((joke: any) => {
                                         let j = joke.toJSON();
-                                        j.distance =
+                                        j.similarity =
                                             res.rows.find(
                                                 (row: any) => row[1] == j.id // string and number comparison, ew :(
                                             )[0] * 100;
-                                        j.distance = j.distance.toFixed(2);
+                                        j.similarity = (100 - j.similarity).toFixed(2);
                                         return j;
                                     })
                                     .sort((a: any, b: any) => {
-                                        return b.distance - a.distance;
+                                        return b.similarity - a.similarity;
                                     });
                                 resolve(
                                     new Response(JSON.stringify(similarJokes))
