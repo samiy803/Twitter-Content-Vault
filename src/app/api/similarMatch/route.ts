@@ -6,7 +6,7 @@ import { Joke } from "@/lib/pg";
 export async function POST(req: NextRequest) {
     return new Promise<Response>(async (resolve, reject) => {
         const ex = exec(
-            "sudo -E python3 src/app/api/similarMatch/embed.py",
+            "sudo -E python3 /app/src/app/api/similarMatch/embed.py",
             (error, stdout, stderr) => {
                 if (error) {
                     console.error(`exec error: ${error}`);
@@ -18,11 +18,11 @@ export async function POST(req: NextRequest) {
                     const res = db
                         .run(
                             `?[dist, k] := ~jokes:index_name{ k |
-                        query: q,
-                        k: 5,
-                        ef: 20,
-                        bind_distance: dist,
-                    }, q = vec(${stdout.trim()})`
+                                query: q,
+                                k: 5,
+                                ef: 20,
+                                bind_distance: dist,
+                            }, q = vec(${stdout.trim()})`
                         )
                         .catch(async (err) => {
                             // database is probably locked. retry after 500ms second
