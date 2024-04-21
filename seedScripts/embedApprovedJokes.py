@@ -26,7 +26,7 @@ def main(dev: bool):
     # must be the same model as in src/app/api/similarMatch/embed.py, since the embeddings are black boxes
     model = SentenceTransformer("avsolatorio/GIST-Embedding-v0", trust_remote_code=True)
 
-    cozo = Client("sqlite", "cozo.db")
+    cozo = Client("sqlite", "/app/cozo.db")
 
     try:
         cozo.run(":create jokes {k: String => v: <F32; 768>}")

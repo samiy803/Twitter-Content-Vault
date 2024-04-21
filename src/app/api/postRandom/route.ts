@@ -1,10 +1,9 @@
 import { NextRequest } from "next/server";
 import { Joke, sequelize } from "@/lib/pg";
-import { TwitterApi } from 'twitter-api-v2';
+import { TwitterApi } from "twitter-api-v2";
 import { headers } from "next/headers";
 
 export async function POST(req: NextRequest) {
-
     const apiKey = headers().get("x-api-key");
 
     if (!apiKey || apiKey !== process.env.API_KEY) {
@@ -32,8 +31,8 @@ export async function POST(req: NextRequest) {
 
     try {
         await client.v2.tweet({
-        text: joke.get("joke") as string,
-       })
+            text: joke.get("joke") as string,
+        });
     } catch (e) {
         console.log(e);
         return new Response("Failed to post joke", { status: 500 });
@@ -41,6 +40,8 @@ export async function POST(req: NextRequest) {
 
     joke.set("used", true);
     await joke.save();
+
+    console.log("Posted joke: ", joke.get("joke"));
 
     return new Response("Posted joke", { status: 200 });
 }
